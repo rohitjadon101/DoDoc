@@ -52,4 +52,32 @@ router.post('/login', async (req, res) => {
     }
 })
 
+router.post('/createDocument/:id', async (req, res) => {
+    const {title, content} = req.body;
+    const userID = req.params.id;
+
+    try {
+        const newDoc = new document({
+            title,
+            content,
+            owner: userID
+        })
+        await newDoc.save();
+        res.status(200).json();
+    } catch (error) {
+        console.log("Error occured : ", error.message);        
+        res.status(500).json({message: "Internal Error:"})
+    }
+})
+
+router.get('/getAllDocuments', async (req,res) => {
+    try {
+        const allDocs = await document.find();
+        res.status(200).json(allDocs);
+    } catch (error) {
+        console.log("Error occured : ", error.message);
+        res.status(500).json({message: "Internal Error:"});
+    }
+})
+
 module.exports = router;

@@ -1,6 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 const CreateDocument = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = cookies.get('token');
+    if(!token) return navigate('/login');
+  })
+  const user = cookies.get('user');
+
+  const [formData, setFormData] = useState({title: '', content: ''});
+  const handleChange = (e) => {
+    setFormData({...formData, [e.target.name]: e.target.value})
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/documents/createDocument/${user._id}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(formData)
+      })
+      if(res.ok){
+        alert("Document saved!");
+        navigate('/profile')
+      }
+      else{
+        const data = await res.json();
+        alert(data.message);
+      }
+    } catch (error) {
+      alert('Network Error:');
+    }
+  }
+
   return (
     <div className="container py-5">
       <div className="row justify-content-center">
@@ -14,13 +52,16 @@ const CreateDocument = () => {
           {/* Form */}
           <div className="card shadow-sm border-0">
             <div className="card-body">
-              <form>
+              <form onSubmit={handleSubmit}>
                 {/* Document Title */}
                 <div className="mb-4">
                   <label htmlFor="documentTitle" className="form-label fw-bold">
                     Document Title
                   </label>
                   <input
+                    value={formData.title}
+                    onChange={handleChange}
+                    name="title"
                     type="text"
                     id="documentTitle"
                     className="form-control"
@@ -34,6 +75,9 @@ const CreateDocument = () => {
                     Document Content
                   </label>
                   <textarea
+                    value={formData.content}
+                    onChange={handleChange}
+                    name="content"
                     id="documentContent"
                     className="form-control"
                     rows="10"
@@ -43,9 +87,7 @@ const CreateDocument = () => {
 
                 {/* Action Buttons */}
                 <div className="d-flex justify-content-end mt-4">
-                  <button type="button" className="btn btn-secondary me-3">
-                    Cancel
-                  </button>
+                  <Link to='/profile' className="btn btn-secondary me-3">Cancel</Link>
                   <button type="submit" className="btn btn-primary">
                     Save Document
                   </button>
