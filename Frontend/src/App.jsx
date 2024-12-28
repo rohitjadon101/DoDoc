@@ -6,6 +6,8 @@ import Footer from "./components/Footer"
 import LoginPage from "./components/LoginPage"
 import RegisterPage from "./components/RegisterPage"
 import ProfilePage from "./components/ProfilePage"
+import CreateDocument from "./components/CreateDocument"
+import ViewDocument from "./components/ViewDocument"
 
 function App() {
   
@@ -17,6 +19,8 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/createDoc" element={<CreateDocument />} />
+        <Route path="/viewDoc" element={<ViewDocument />} />
       </Routes>
       <Footer/>
     </Router>

@@ -1,4 +1,6 @@
 import React from "react";
+import { useNavigate, Link } from "react-router-dom";
+const navigate = useNavigate();
 
 const ProfilePage = () => {
   // Sample user data (only for Temporary use)
@@ -29,7 +31,7 @@ const ProfilePage = () => {
 
         {/* Recent Documents */}
         <div className="col-md-8">
-          <h2 className="mb-4">Recent Documents</h2>
+          <h2 className="mb-4 text-secondary">Recent Documents</h2>
           {user.recentDocs.length > 0 ? (
             <ul className="list-group">
               {user.recentDocs.map((doc) => (
@@ -50,14 +52,38 @@ const ProfilePage = () => {
 
           {/* Button to Create New Document */}
           <div className="mt-4">
-            <button className="btn btn-success btn-lg">
-              + Create New Document
-            </button>
+            <Link to='/createDoc' className="btn btn-success btn-lg">+ Create New Document</Link>
           </div>
         </div>
       </div>
+        
+      <hr />
+      <div className="mt-4 ">
+        <h2 className="mb-4 text-secondary">All Documents</h2>
+        <div className="row">
+          {user.recentDocs.map((doc) => (
+            <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={doc.id}>
+              <div className="card shadow-sm border-1">
+                <div className="card-body">
+                  <h5 className="card-title fw-bold text-primary">{doc.title}</h5>
+                  <p className="badge bg-light text-secondary small">
+                    Last updated on {doc.lastModified}
+                  </p>
+                  <div className="d-flex justify-content-between mt-3">
+                    <a href="#" className="btn btn-outline-primary btn-sm">Open</a>
+                    <div>
+                      <a href="#" className="btn btn-outline-secondary btn-sm me-2">Edit</a>
+                      <a href="#" className="btn btn-outline-danger btn-sm">Delete</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
-  );
+  )
 };
 
 export default ProfilePage;
