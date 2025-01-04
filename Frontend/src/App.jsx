@@ -8,6 +8,9 @@ import RegisterPage from "./components/RegisterPage"
 import ProfilePage from "./components/ProfilePage"
 import CreateDocument from "./components/CreateDocument"
 import ViewDocument from "./components/ViewDocument"
+import EditDocument from "./components/EditDocument"
+import Dashboard from "./components/Dashboard"
+import EditProfile from "./components/EditProfile"
 
 function App() {
   
@@ -16,11 +19,14 @@ function App() {
       <Header/>
       <Routes>
         <Route path="/" element={<LandingPage/>} />
+        <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/createDoc" element={<CreateDocument />} />
         <Route path="/viewDoc" element={<ViewDocument />} />
+        <Route path="/editDoc" element={<EditDocument />} />
+        <Route path="/editProfile" element={<EditProfile />} />
       </Routes>
       <Footer/>
     </Router>

@@ -1,37 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 const ViewDocument = () => {
-  // Sample document data (replace with dynamic data)
-  const document = {
-    title: "Sample Document Title",
-    lastModified: "December 28, 2024",
-    content: `
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed egestas orci at urna interdum, a hendrerit lectus tristique.
-      Ut interdum lacus vel vehicula fermentum. Curabitur fringilla, lorem ac suscipit aliquet, erat sapien consequat turpis,
-      non vehicula nunc erat a tortor.
-    `,
-  };
+  const navigate = useNavigate();
+  const location = useLocation();
+  const referrer = location.state?.from || "/dashboard";
+
+  const token = cookies.get("token");
+  if (!token) return navigate("/login");
+
+  const [doc, setDoc] = useState(null);
+  const docID = cookies.get('docID');
+  
+  useEffect(() => {
+    if (docID) {
+      fetch(`http://localhost:5000/api/documents/getDoc/${docID}`,{
+        headers: {Authorization: `Bearer ${token}`},
+      })
+      .then((res) => {
+          if (!res.ok) throw new Error('Failed to fetch place');
+          return res.json();
+      })
+      .then((data) => setDoc(data))
+      .catch((error) => console.error("Error fetching data:", error));
+    }
+}, [docID]);
 
   return (
-    <div className="container py-5">
+    <div className="container py-5 min-vh-100">
+    {doc && <div>
       {/* Document Header */}
       <div className="row mb-4">
         <div className="col">
           <div className="d-flex justify-content-between align-items-center">
-            <h1 className="fw-bold text-primary">{document.title}</h1>
+            <h1 className="fw-bold text-primary">{doc.title}</h1>
             <div>
-              <button className="btn btn-secondary me-2">
-                <i className="bi bi-arrow-left"></i> Back to List
-              </button>
-              <button className="btn btn-warning me-2">
-                <i className="bi bi-pencil"></i> Edit
-              </button>
-              <button className="btn btn-danger">
-                <i className="bi bi-trash"></i> Delete
-              </button>
+              <Link to={referrer} className="btn btn-secondary me-2">Back to List</Link>
+              <button className="btn btn-warning me-2" onClick={() => {
+                navigate('/editDoc', {state: {from: '/viewDoc'}})
+              }}>Edit</button>
             </div>
           </div>
-          <p className="text-muted fs-6">Last modified on {document.lastModified}</p>
+          <p className="text-muted fs-6">Last modified on {doc.createdAt}</p>
         </div>
       </div>
 
@@ -40,11 +53,13 @@ const ViewDocument = () => {
         <div className="col">
           <div className="card shadow-lg border-0 mb-4">
             <div className="card-body p-4">
-              <p className="text-dark fs-5 lh-lg">{document.content}</p>
+              <p className="text-dark fs-5 lh-lg">{doc.content}</p>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    }
     </div>
   );
 };

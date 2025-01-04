@@ -6,93 +6,115 @@ const cookies = new Cookies();
 const ProfilePage = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = cookies.get('token');
-    if(!token) return navigate('/login');
-  })
-  const user = cookies.get('user');
+  const token = cookies.get("token");
+  if (!token) return navigate("/login");
+
+  const user = cookies.get("user");
 
   const [allDocs, setAllDocs] = useState([]);
   useEffect(() => {
-    fetch(`http://localhost:5000/api/documents/getAllDocuments`)
-    .then((res) => res.json())
-    .then((data) => setAllDocs(data))
-    .catch(() => alert("Network Error:"))
-  })
+    fetch(`http://localhost:5000/api/documents/getUserDocs/${user._id}`, {
+      headers: {Authorization: `Bearer ${token}`},
+    })
+      .then((res) => res.json())
+      .then((data) => setAllDocs(data))
+      .catch(() => alert("Network Error:"));
+  });
+
+  const handleDelete = (docID) => {
+    fetch(`http://localhost:5000/api/documents/deleteDoc/${docID}`, {
+      method: 'DELETE',
+      headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
+    })
+    .then((res) => {
+      if(res.ok){
+        alert("Document deleted!")
+      }
+      else{
+        alert("something went wrong")
+      }
+    })
+    .catch(() => alert("Network Error:"));
+  }
 
   return (
     <div className="container py-5">
       {/* User Information */}
-      <div className="row">
-        <div className="col-md-4 text-center">
-          <img
-            src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png"
-            alt="Avatar"
-            className="rounded-circle mb-3 w-25"
-          />
-          <h3>{user.name}</h3>
-          <p className="text-muted">{user.email}</p>
-          <button className="btn btn-primary">Edit Profile</button>
-        </div>
-
-        {/* Recent Documents */}
-        <div className="col-md-8">
-          <h2 className="mb-4 text-secondary">Recent Documents</h2>
-          {allDocs.length > 0 ? (
-            <ul className="list-group">
-              {allDocs.map((doc) => (
-                <li
-                  key={doc._id}
-                  className="list-group-item d-flex justify-content-between align-items-center"
-                >
-                  <span>{doc.title}</span>
-                  <small className="text-muted">
-                    Last modified: {doc.createdAt}
-                  </small>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-muted">No recent documents available.</p>
-          )}
-
-          {/* Button to Create New Document */}
-          <div className="mt-4">
-            <Link to='/createDoc' className="btn btn-success btn-lg">+ Create New Document</Link>
-          </div>
+      <div className="d-flex flex-column align-items-center mb-4">
+        <img
+          src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png"
+          alt="Avatar"
+          className="rounded-circle mb-3 shadow-lg"
+          style={{ width: "100px", height: "100px" }}
+        />
+        <h3 className="fw-bold text-primary">{user.fullName}</h3>
+        <p className="text-muted mb-3">{user.email}</p>
+        <div className="d-flex gap-2">
+          <Link to='/editProfile' className="btn btn-outline-primary">Edit Profile</Link>
+          <button className="btn btn-outline-danger" onClick={() => {
+            alert('logged out Successfully!')
+            cookies.remove('token');
+            cookies.remove('user');
+            navigate('/');
+          }}>
+            <i className="bi bi-box-arrow-right"></i> Logout
+          </button>
         </div>
       </div>
-        
+
       <hr />
-      <div className="mt-4 ">
-        <h2 className="mb-4 text-secondary">All Documents</h2>
-        <div className="row">
-          {allDocs.map((doc) => (
-            <div className="col-sm-6 col-md-4 col-lg-3 mb-4" key={doc._id}>
-              <div className="card shadow-sm border-1">
-                <div className="card-body">
-                  <h5 className="card-title fw-bold text-primary">{doc.title}</h5>
-                  <p className="badge bg-light text-secondary small">
-                    Last updated on 28/12/2024
-                  </p>
-                  <div className="d-flex justify-content-between mt-3">
-                    <button onClick={() => {
-                      cookies.set('docID', doc._id)
-                      navigate('/viewDoc')
-                    }} className="btn btn-outline-primary btn-sm">Open</button>
-                    <div>
-                      <a href="#" className="btn btn-outline-secondary btn-sm me-2">Edit</a>
-                      <a href="#" className="btn btn-outline-danger btn-sm">Delete</a>
+
+      {/* Documents Section */}
+      <div>
+        <div className="d-flex gap-4 align-items-center mb-4">
+          <h2 className="text-secondary">Your Documents</h2>
+          <Link to="/createDoc" className="btn btn-success">
+            <i className="bi bi-plus-lg"></i>+ New
+          </Link>
+        </div>
+        <div className="row g-4">
+          {allDocs.length > 0 ? (
+            allDocs.map((doc) => (
+              <div className="col-sm-6 col-md-4 col-lg-3" key={doc._id}>
+                <div className="card shadow-sm border-0 h-100">
+                  <div className="card-body d-flex flex-column">
+                    <h5 className="card-title text-primary fw-bold">{doc.title}</h5>
+                    <p className="text-muted small">
+                      <i className="bi bi-clock"></i> Created on {new Date(doc.createdAt).toLocaleDateString()}
+                    </p>
+                    <div className="mt-auto d-flex justify-content-between">
+                      <button
+                        onClick={() => {
+                          cookies.set('docID', doc._id);
+                          navigate("/viewDoc", {state: {from: '/profile'}});
+                        }}
+                        className="btn btn-outline-primary btn-sm"
+                      >
+                        Open
+                      </button>
+                      <div className="d-flex gap-2">
+                        <button className="btn btn-outline-secondary btn-sm" onClick={() => {
+                          cookies.set('docID', doc._id)
+                          navigate('/editDoc', { state: { from: "/profile" } })
+                        }}>
+                          Edit
+                        </button>
+                        <button className="btn btn-outline-danger btn-sm" onClick={() => handleDelete(doc._id)}>
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <div className="text-center text-muted">No documents available.</div>
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default ProfilePage;

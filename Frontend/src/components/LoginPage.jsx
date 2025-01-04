@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import Cookies from "universal-cookie";
+import { useNavigate } from "react-router-dom";
 const cookies = new Cookies();
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({email: '', password: ''});
   const handleChange = (e) => {
     setFormData({...formData, [e.target.name]: e.target.value})
@@ -21,7 +24,7 @@ const LoginPage = () => {
       if(data.token){
         cookies.set('token', data.token)
         cookies.set('user', data.foundUser)
-        window.location.href = '/profile';
+        navigate('/dashboard');
       }
       else{
         alert(data.message);

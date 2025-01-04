@@ -1,42 +1,59 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
-const CreateDocument = () => {
+const EditDocument = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const referrer = location.state?.from || "/dashboard";
 
   const token = cookies.get("token");
   if (!token) return navigate("/login");
 
-  const user = cookies.get('user');
+  const docID = cookies.get("docID");
+  const [doc, setDoc] = useState(null);
+  const [formData, setFormData] = useState({ title: "", content: "" });
 
-  const [formData, setFormData] = useState({title: '', content: ''});
+  useEffect(() => {
+    if (docID) {
+      fetch(`http://localhost:5000/api/documents/getDoc/${docID}`, {
+        headers: {Authorization: `Bearer ${token}`},
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setDoc(data);
+          setFormData({ title: data.title, content: data.content });
+        })
+        .catch(() => alert("Network Error"));
+    }
+  }, [docID]);
+
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value})
-  }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:5000/api/documents/createDocument/${user._id}`, {
-        method: 'POST',
+      const res = await fetch(`http://localhost:5000/api/documents/editDocument/${docID}`, {
+        method: "PUT",
         headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
-        body: JSON.stringify(formData)
-      })
-      if(res.ok){
-        alert("Document saved!");
-        navigate('/profile')
-      }
-      else{
+        body: JSON.stringify(formData),
+      });
+      if (res.ok) {
+        alert("Document edited!");
+        navigate(referrer)
+      } else {
         const data = await res.json();
         alert(data.message);
       }
     } catch (error) {
-      alert('Network Error:');
+      alert("Network Error");
     }
-  }
+  };
+
 
   return (
     <div className="container py-5">
@@ -44,8 +61,7 @@ const CreateDocument = () => {
         <div className="col-lg-8 col-md-10">
           {/* Page Header */}
           <div className="mb-4 text-center">
-            <h2 className="fw-bold text-primary">Create New Document</h2>
-            <p className="text-muted">Fill in the details below to create a new document.</p>
+            <h2 className="fw-bold text-primary">Edit Document</h2>
           </div>
 
           {/* Form */}
@@ -86,7 +102,7 @@ const CreateDocument = () => {
 
                 {/* Action Buttons */}
                 <div className="d-flex justify-content-end mt-4">
-                  <Link to='/profile' className="btn btn-secondary me-3">Cancel</Link>
+                  <Link to={referrer} className="btn btn-secondary me-3">Cancel</Link>
                   <button type="submit" className="btn btn-primary">
                     Save Document
                   </button>
@@ -100,4 +116,4 @@ const CreateDocument = () => {
   );
 };
 
-export default CreateDocument;
+export default EditDocument;
