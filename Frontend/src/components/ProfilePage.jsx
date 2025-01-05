@@ -42,7 +42,7 @@ const ProfilePage = () => {
       {/* User Information */}
       <div className="d-flex flex-column align-items-center mb-4">
         <img
-          src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png"
+          src={user.profilePicture}
           alt="Avatar"
           className="rounded-circle mb-3 shadow-lg"
           style={{ width: "100px", height: "100px" }}

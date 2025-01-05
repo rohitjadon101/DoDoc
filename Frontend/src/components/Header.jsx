@@ -36,12 +36,15 @@ const Header = () => {
           {/* Navigation Links */}
           <div className="collapse navbar-collapse" id="navbarNav">
             {user ? (
-              <ul className="navbar-nav ms-auto">
+              <ul className="navbar-nav ms-auto d-flex gap-4">
                 <li className="nav-item">
                   <a className="nav-link" href="/dashboard">Home</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/profile">{user.fullName}</a>
+                  <div className="d-flex">
+                    <img src={user.profilePicture} className="rounded-circle" alt="profile" style={{ width: "40px", height: "40px" }} />
+                    <a className="nav-link text-light" href="/profile">{user.fullName}</a>
+                  </div>
                 </li>
               </ul>
             ) : (

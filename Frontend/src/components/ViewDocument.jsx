@@ -44,7 +44,7 @@ const ViewDocument = () => {
               }}>Edit</button>
             </div>
           </div>
-          <p className="text-muted fs-6">Last modified on {doc.createdAt}</p>
+          <p className="text-muted fs-6">Created on {new Date(doc.createdAt).toLocaleDateString()}</p>
         </div>
       </div>
 
