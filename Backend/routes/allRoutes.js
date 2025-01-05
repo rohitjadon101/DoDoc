@@ -105,24 +105,23 @@ router.get('/getDoc/:docID', verifyToken, async (req, res) => {
     }
 });  
 
-router.put('/editDocument/:docID', verifyToken, async (req,res) => {
+router.put('/editDocument/:docID', verifyToken, async (req, res) => {
     try {
-        const {title, content} = req.body;
+        const { title, content } = req.body;
         const docID = req.params.docID;
-        const doc = await document.findByIdAndUpdate(docID, {
-            title,
-            content,
-        }, { new: true })
 
+        const doc = await document.findByIdAndUpdate(docID, { title, content }, { new: true });
         if (!doc) {
             return res.status(404).json({ message: "Document not found" });
         }
-        res.status(200).json();
+
+        req.io.to(docID).emit('receiveUpdate', { title, content }); // Notify clients in the room
+        res.status(200).json(doc);
     } catch (error) {
-        console.log("Error occured : ", error.message);
-        res.status(500).json({message: "Internal Error:"});
+        console.log("Error occurred:", error.message);
+        res.status(500).json({ message: "Internal Error:" });
     }
-})
+});
 
 router.delete('/deleteDoc/:docID', verifyToken, async (req,res) => {
     try {

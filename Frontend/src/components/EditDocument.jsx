@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { io } from "socket.io-client";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
+const socket = io("http://localhost:5000"); // Backend URL
 
 const EditDocument = () => {
   const navigate = useNavigate();
@@ -24,13 +26,25 @@ const EditDocument = () => {
         .then((data) => {
           setDoc(data);
           setFormData({ title: data.title, content: data.content });
+          socket.emit('joinDocument', { docID }); // Join document room
         })
         .catch(() => alert("Network Error"));
     }
+    return () => {
+      socket.emit('leaveDocument', { docID }); // Explicitly leave the room
+    };
   }, [docID]);
 
+  useEffect(() => {
+    socket.on('receiveUpdate', (content) => {
+        setFormData(content); // Update formData with real-time changes
+    });
+  }, []);
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const updatedFormData = { ...formData, [e.target.name]: e.target.value };
+    setFormData(updatedFormData);
+    socket.emit('updateDocument', { docID, content: updatedFormData }); // Emit real-time changes
   };
 
   const handleSubmit = async (e) => {
