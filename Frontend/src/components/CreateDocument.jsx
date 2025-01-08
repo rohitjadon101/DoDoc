@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import Header from "./Header";
+import Footer from "./Footer";
 const cookies = new Cookies();
 
 const CreateDocument = () => {
@@ -39,6 +41,8 @@ const CreateDocument = () => {
   }
 
   return (
+    <>
+    <Header />
     <div className="container py-5">
       <div className="row justify-content-center">
         <div className="col-lg-8 col-md-10">
@@ -97,6 +101,8 @@ const CreateDocument = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

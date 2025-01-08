@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Cookies from "universal-cookie";
+import Footer from "./Footer";
+import Header from "./Header";
 const cookies = new Cookies();
 
 const ProfilePage = () => {
@@ -38,6 +40,8 @@ const ProfilePage = () => {
   }
 
   return (
+    <>
+    <Header />
     <div className="container py-5">
       {/* User Information */}
       <div className="d-flex flex-column align-items-center mb-4">
@@ -114,6 +118,8 @@ const ProfilePage = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

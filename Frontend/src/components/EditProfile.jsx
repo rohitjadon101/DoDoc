@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Cookies from "universal-cookie";
 import { useNavigate, Link } from "react-router-dom";
+import Header from "./Header";
+import Footer from "./Footer";
 const cookies = new Cookies();
 
 const EditProfile = () => {
@@ -39,6 +41,8 @@ const EditProfile = () => {
   }
 
   return (
+    <>
+    <Header />
     <div className="container py-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
@@ -82,6 +86,8 @@ const EditProfile = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

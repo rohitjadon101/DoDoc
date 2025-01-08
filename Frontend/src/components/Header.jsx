@@ -42,7 +42,7 @@ const Header = () => {
                 </li>
                 <li className="nav-item">
                   <div className="d-flex">
-                    <img src={user.profilePicture} className="rounded-circle" alt="profile" style={{ width: "40px", height: "40px" }} />
+                    <img src={user.profilePicture} className="rounded-circle bg-light" alt="profile" style={{ width: "40px", height: "40px" }} />
                     <a className="nav-link text-light" href="/profile">{user.fullName}</a>
                   </div>
                 </li>

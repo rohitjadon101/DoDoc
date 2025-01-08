@@ -2,6 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import Header from "./Header";
+import Footer from "./Footer";
 const cookies = new Cookies();
 
 const Dashboard = () => {
@@ -25,6 +27,8 @@ const Dashboard = () => {
   }, [user])
 
   return (
+    <>
+    <Header />
     <main className="bg-light py-5 px-5 min-vh-100">
         <div>
             <h2 className="mb-4 text-secondary">All Documents</h2>
@@ -57,6 +61,8 @@ const Dashboard = () => {
             </div>
         </div>
     </main>
+    <Footer />
+    </>
   );
 };
 

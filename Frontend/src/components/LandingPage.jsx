@@ -1,8 +1,12 @@
 import React from "react";
+import Header from "./Header";
+import Footer from "./Footer";
 
 const LandingPage = () => {
 
   return (
+    <>
+    <Header />
     <main className="bg-light py-5 px-5 min-vh-100">
       <div>
         {/* Welcome Section */}
@@ -50,6 +54,8 @@ const LandingPage = () => {
         </div>
       </div>
     </main>
+    <Footer />
+    </>
   );
 };
 

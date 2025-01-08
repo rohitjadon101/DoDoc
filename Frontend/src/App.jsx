@@ -1,8 +1,6 @@
 import React from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import LandingPage from "./components/LandingPage"
-import Header from "./components/Header"
-import Footer from "./components/Footer"
 import LoginPage from "./components/LoginPage"
 import RegisterPage from "./components/RegisterPage"
 import ProfilePage from "./components/ProfilePage"
@@ -16,7 +14,6 @@ function App() {
   
   return (
     <Router>
-      <Header/>
       <Routes>
         <Route path="/" element={<LandingPage/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
@@ -28,7 +25,6 @@ function App() {
         <Route path="/editDoc" element={<EditDocument />} />
         <Route path="/editProfile" element={<EditProfile />} />
       </Routes>
-      <Footer/>
     </Router>
   )
 }

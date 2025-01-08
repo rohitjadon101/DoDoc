@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 import Cookies from "universal-cookie";
+import Header from "./Header";
+import Footer from "./Footer";
 const cookies = new Cookies();
 const socket = io("http://localhost:5000"); // Backend URL
 
@@ -70,6 +72,8 @@ const EditDocument = () => {
 
 
   return (
+    <>
+    <Header />
     <div className="container py-5">
       <div className="row justify-content-center">
         <div className="col-lg-8 col-md-10">
@@ -127,6 +131,8 @@ const EditDocument = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

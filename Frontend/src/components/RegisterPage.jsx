@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Header from "./Header";
+import Footer from "./Footer";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({fullName: '', email: '', password: ''});
@@ -29,6 +31,8 @@ const RegisterPage = () => {
   }
 
   return (
+    <>
+    <Header />
     <div className="container py-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
@@ -87,6 +91,8 @@ const RegisterPage = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

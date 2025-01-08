@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
+import Header from "./Header";
+import Footer from "./Footer";
 const cookies = new Cookies();
 
 const ViewDocument = () => {
@@ -30,6 +32,8 @@ const ViewDocument = () => {
 }, [docID]);
 
   return (
+    <>
+    <Header />
     <div className="container py-5 min-vh-100">
     {doc && <div>
       {/* Document Header */}
@@ -61,6 +65,8 @@ const ViewDocument = () => {
     </div>
     }
     </div>
+    <Footer />
+    </>
   );
 };
 
