@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
+const backendUrl = import.meta.env.VITE_BACKENDURL;
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({fullName: '', email: '', password: ''});
@@ -12,7 +13,7 @@ const RegisterPage = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:5000/api/documents/register', {
+      const res = await fetch(`${backendUrl}/api/documents/register`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(formData)

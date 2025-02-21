@@ -5,6 +5,7 @@ import Cookies from "universal-cookie";
 import Header from "./Header";
 import Footer from "./Footer";
 const cookies = new Cookies();
+const backendUrl = import.meta.env.VITE_BACKENDURL;
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Dashboard = () => {
   const [allDocs, setAllDocs] = useState([]);
   useEffect(() => {
     if(user){
-      fetch(`http://localhost:5000/api/documents/getAllDocuments`, {
+      fetch(`${backendUrl}/api/documents/getAllDocuments`, {
         headers: {Authorization: `Bearer ${token}`},
       })
       .then((res) => res.json())

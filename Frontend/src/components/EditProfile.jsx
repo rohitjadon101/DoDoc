@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 const cookies = new Cookies();
+const backendUrl = import.meta.env.VITE_BACKENDURL;
 
 const EditProfile = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const EditProfile = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:5000/api/documents/editProfile/${user._id}`, {
+      const res = await fetch(`${backendUrl}/api/documents/editProfile/${user._id}`, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
         body: JSON.stringify(formData)

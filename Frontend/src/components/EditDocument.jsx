@@ -5,7 +5,8 @@ import Cookies from "universal-cookie";
 import Header from "./Header";
 import Footer from "./Footer";
 const cookies = new Cookies();
-const socket = io("http://localhost:5000"); // Backend URL
+const backendUrl = import.meta.env.VITE_BACKENDURL;
+const socket = io(backendUrl); // Backend URL
 
 const EditDocument = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const EditDocument = () => {
 
   useEffect(() => {
     if (docID) {
-      fetch(`http://localhost:5000/api/documents/getDoc/${docID}`, {
+      fetch(`${backendUrl}/api/documents/getDoc/${docID}`, {
         headers: {Authorization: `Bearer ${token}`},
       })
         .then((res) => res.json())
@@ -53,7 +54,7 @@ const EditDocument = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:5000/api/documents/editDocument/${docID}`, {
+      const res = await fetch(`${backendUrl}/api/documents/editDocument/${docID}`, {
         method: "PUT",
         headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
         body: JSON.stringify(formData),

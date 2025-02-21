@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 const cookies = new Cookies();
+const backendUrl = import.meta.env.VITE_BACKENDURL;
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:5000/api/documents/login', {
+      const res = await fetch(`${backendUrl}/api/documents/login`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(formData)

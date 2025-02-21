@@ -4,6 +4,7 @@ import Cookies from "universal-cookie";
 import Footer from "./Footer";
 import Header from "./Header";
 const cookies = new Cookies();
+const backendUrl = import.meta.env.VITE_BACKENDURL;
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const ProfilePage = () => {
 
   const [allDocs, setAllDocs] = useState([]);
   useEffect(() => {
-    fetch(`http://localhost:5000/api/documents/getUserDocs/${user._id}`, {
+    fetch(`${backendUrl}/api/documents/getUserDocs/${user._id}`, {
       headers: {Authorization: `Bearer ${token}`},
     })
       .then((res) => res.json())
@@ -24,7 +25,7 @@ const ProfilePage = () => {
   });
 
   const handleDelete = (docID) => {
-    fetch(`http://localhost:5000/api/documents/deleteDoc/${docID}`, {
+    fetch(`${backendUrl}/api/documents/deleteDoc/${docID}`, {
       method: 'DELETE',
       headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
     })

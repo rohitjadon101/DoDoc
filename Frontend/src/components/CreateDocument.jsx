@@ -4,6 +4,7 @@ import Cookies from "universal-cookie";
 import Header from "./Header";
 import Footer from "./Footer";
 const cookies = new Cookies();
+const backendUrl = import.meta.env.VITE_BACKENDURL;
 
 const CreateDocument = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const CreateDocument = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:5000/api/documents/createDocument/${user._id}`, {
+      const res = await fetch(`${backendUrl}/api/documents/createDocument/${user._id}`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`},
         body: JSON.stringify(formData)
