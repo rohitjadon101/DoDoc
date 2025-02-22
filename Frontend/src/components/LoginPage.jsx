@@ -23,13 +23,14 @@ const LoginPage = () => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(formData)
       })
-      const data = await res.json();
-      if(data.token){
+      if(res.ok){
+        const data = await res.json();
         cookies.set('token', data.token)
         cookies.set('user', data.foundUser)
         navigate('/dashboard');
       }
       else{
+        const data = await res.json();
         alert(data.message);
       }
     } catch (error) {

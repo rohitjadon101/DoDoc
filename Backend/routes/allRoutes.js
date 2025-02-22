@@ -45,7 +45,7 @@ router.post('/login', async (req, res) => {
             if(!result) return res.status(400).json({message: "Incorrect email or passsword"});
 
             const token = jwt.sign({id: foundUser._id}, process.env.JWT_SECRET, {expiresIn: '1h'});
-            res.json({token, foundUser});
+            res.status(200).json({token, foundUser});
         })
     } catch (error) {
         console.log("Error occured : ", error.message);        
