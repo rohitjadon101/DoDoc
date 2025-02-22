@@ -5,7 +5,7 @@ import Cookies from "universal-cookie";
 import Header from "./Header";
 import Footer from "./Footer";
 const cookies = new Cookies();
-const backendUrl = import.meta.env.VITE_BACKENDURL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const ViewDocument = () => {
   const navigate = useNavigate();

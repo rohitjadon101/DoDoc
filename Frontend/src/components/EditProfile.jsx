@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 const cookies = new Cookies();
-const backendUrl = import.meta.env.VITE_BACKENDURL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const EditProfile = () => {
   const navigate = useNavigate();

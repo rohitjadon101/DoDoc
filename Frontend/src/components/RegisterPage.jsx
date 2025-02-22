@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-const backendUrl = import.meta.env.VITE_BACKENDURL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({fullName: '', email: '', password: ''});

@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 import Footer from "./Footer";
 import Header from "./Header";
 const cookies = new Cookies();
-const backendUrl = import.meta.env.VITE_BACKENDURL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const ProfilePage = () => {
   const navigate = useNavigate();
