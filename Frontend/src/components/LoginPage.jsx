@@ -79,7 +79,7 @@ const LoginPage = () => {
                 </div>
               </form>
               <p className="text-center mt-3">
-                Don't have an account? <a href="/register">Register here</a>.
+                Don't have an account? <p onClick={() => navigate('/register')}>Register here</p>.
               </p>
             </div>
           </div>

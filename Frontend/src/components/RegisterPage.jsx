@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({fullName: '', email: '', password: ''});
   const handleChange = (e) => {
     setFormData({...formData, [e.target.name]: e.target.value})
@@ -20,7 +23,7 @@ const RegisterPage = () => {
       })
       if(res.ok){
         alert("user registered successfully!");
-        window.location.href = '/login';
+        navigate('/login');
       }
       else{
         const data = await res.json();
@@ -85,7 +88,7 @@ const RegisterPage = () => {
                 </div>
               </form>
               <p className="text-center mt-3">
-                Already have an account? <a href="/login">Login here</a>.
+                Already have an account? <p onClick={() => navigate('/login')}>Login here</p>.
               </p>
             </div>
           </div>

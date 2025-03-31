@@ -40,7 +40,7 @@ const EditDocument = () => {
 
   useEffect(() => {
     socket.on('receiveUpdate', (content) => {
-        setFormData(content); // Update formData with real-time changes
+      setFormData(content); // Update formData with real-time changes
     });
   }, []);
 

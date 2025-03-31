@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
 
   return (
     <>
@@ -16,12 +18,12 @@ const LandingPage = () => {
             Create, edit, and collaborate on documents with ease.
           </p>
           <div className="mt-4">
-            <a className="btn btn-primary btn-lg me-3" href="/login">
+            <button className="btn btn-primary btn-lg me-3" onClick={() => navigate('/login')}>
               Get Started
-            </a>
-            <a className="btn btn-outline-secondary btn-lg" href="#">
+            </button>
+            <button className="btn btn-outline-secondary btn-lg" onClick={() => navigate('#')}>
               Learn More
-            </a>
+            </button>
           </div>
         </div>
 
